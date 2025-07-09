@@ -118,7 +118,7 @@ app.get("/", async (req, res) => {
 
 app.get("/sendHello", (req, res) => {
   sendReply("31401170246149001", "Hello");
-  res.send("sendHello success");
+  res.send(`sendHello success ${ADMIN_SEND_MESSAGE_TOKEN}`);
 });
 
 // 4️⃣ Start server
