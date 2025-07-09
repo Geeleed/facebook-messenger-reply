@@ -37,7 +37,7 @@ function processMessage(text) {
 const PAGE_ACCESS_TOKEN = process.env.YOUR_PAGE_ACCESS_TOKEN;
 
 function sendReply(senderId, messageText) {
-  axios.post(`https://graph.facebook.com/v19.0/me/messages`, {
+  axios.post(`https://graph.facebook.com/v23.0/me/messages`, {
     recipient: { id: senderId },
     message: { text: messageText }
   }, {
