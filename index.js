@@ -113,6 +113,11 @@ app.get("/", async (req, res) => {
   res.send("Hello Welcone to Geeleed Facebook API");
 });
 
+app.get("/sendHello", (req, res) => {
+  sendReply("31401170246149001", "Hello");
+  res.send(`sendHello success ${ADMIN_SEND_MESSAGE_TOKEN}`);
+});
+
 // 4️⃣ Start server
 const PORT = process.env.PORT || 8100;
 app.listen(PORT, () => {
