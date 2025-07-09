@@ -31,7 +31,8 @@ app.post("/webhook", async (req, res) => {
     .then((json) => console.log(json));
 
   if (body.object === "page") {
-    body.entry.forEach(async (entry) => {
+    for (let i = 0; i < body.entry.length; i++) {
+      const entry = body.entry[i];
       const event = entry.messaging[0];
       const senderId = event.sender.id;
       console.log({ event });
@@ -49,7 +50,8 @@ app.post("/webhook", async (req, res) => {
 
         // 📎 Handle attachments (media or sticker)
         if (attachments && attachments.length > 0) {
-          attachments.forEach(async (attachment) => {
+          for (let j = 0; j < attachments.length; j++) {
+            const attachment = attachments[j];
             const type = attachment.type;
             const url = attachment.payload?.url || "(ไม่มี URL)";
 
@@ -76,10 +78,10 @@ app.post("/webhook", async (req, res) => {
                 `ได้รับสิ่งที่ส่งมาแล้ว (ประเภท: ${type})`
               );
             }
-          });
+          }
         }
       }
-    });
+    }
 
     res.status(200).send("EVENT_RECEIVED");
   } else {
