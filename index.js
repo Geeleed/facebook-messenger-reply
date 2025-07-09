@@ -26,10 +26,6 @@ app.get("/webhook", (req, res) => {
 app.post("/webhook", async (req, res) => {
   const body = req.body;
 
-  await fetch("https://jsonplaceholder.typicode.com/todos/1")
-    .then((response) => response.json())
-    .then((json) => console.log(json));
-
   if (body.object === "page") {
     for (let i = 0; i < body.entry.length; i++) {
       const entry = body.entry[i];
@@ -92,11 +88,13 @@ app.post("/webhook", async (req, res) => {
 // 3️⃣ Send message back
 async function sendReply(senderId, messageText) {
   await fetch(
-    `https://graph.facebook.com/v23.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+    // `https://graph.facebook.com/v23.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
+    `https://graph.facebook.com/v23.0/me/messages`,
     {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        authoriztion: `bearer ${PAGE_ACCESS_TOKEN}`,
       },
       body: JSON.stringify({
         recipient: { id: senderId },
@@ -114,23 +112,6 @@ async function sendReply(senderId, messageText) {
       );
     })
     .finally(() => console.log("function sendReply"));
-  //   axios
-  //     .post(
-  //       `https://graph.facebook.com/v23.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
-  //       {
-  //         recipient: { id: senderId },
-  //         message: { text: messageText },
-  //       }
-  //     )
-  //     .then(() => {
-  //       console.log("✅ ส่งข้อความกลับแล้ว");
-  //     })
-  //     .catch((err) => {
-  //       console.error(
-  //         "❌ ส่งข้อความไม่สำเร็จ:",
-  //         err.response?.data || err.message
-  //       );
-  //     });
 }
 
 // 4️⃣ Start server
