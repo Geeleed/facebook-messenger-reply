@@ -104,7 +104,7 @@ async function sendReply(senderId, messageText) {
         "❌ ส่งข้อความไม่สำเร็จ:",
         err.response?.data || err.message
       );
-    });
+    }).finally(()=>console.log("function sendReply"));
   //   axios
   //     .post(
   //       `https://graph.facebook.com/v23.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
