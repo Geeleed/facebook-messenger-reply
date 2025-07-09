@@ -86,17 +86,20 @@ app.post("/webhook", async (req, res) => {
 
 // 3️⃣ Send message back
 async function sendReply(senderId, messageText) {
-  await fetch(`https://graph.facebook.com/v23.0/me/messages`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `bearer ${ADMIN_SEND_MESSAGE_TOKEN}`,
-    },
-    body: JSON.stringify({
-      recipient: { id: senderId },
-      message: { text: messageText },
-    }),
-  })
+  await fetch(
+    `https://graph.facebook.com/v23.0/me/messages?access_token=${ADMIN_SEND_MESSAGE_TOKEN}`,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        //   authorization: `bearer ${ADMIN_SEND_MESSAGE_TOKEN}`,
+      },
+      body: JSON.stringify({
+        recipient: { id: senderId },
+        message: { text: messageText },
+      }),
+    }
+  )
     .then(() => {
       console.log("✅ ส่งข้อความกลับแล้ว");
     })
