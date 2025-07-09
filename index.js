@@ -86,17 +86,19 @@ app.post("/webhook", async (req, res) => {
 
 // 3️⃣ Send message back
 async function sendReply(senderId, messageText) {
-  await fetch(`https://graph.facebook.com/v23.0/me/messages`, {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `bearer ${ADMIN_SEND_MESSAGE_TOKEN}`,
-    },
-    body: JSON.stringify({
-      recipient: { id: senderId },
-      message: { text: messageText },
-    }),
-  })
+  await fetch(
+    `https://graph.facebook.com/v23.0/me/messages?access_token=${ADMIN_SEND_MESSAGE_TOKEN}`,
+    {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        recipient: { id: senderId },
+        message: { text: messageText },
+      }),
+    }
+  )
     .then(() => {
       console.log("✅ ส่งข้อความกลับแล้ว");
     })
@@ -111,11 +113,6 @@ async function sendReply(senderId, messageText) {
 
 app.get("/", async (req, res) => {
   res.send("Hello Welcone to Geeleed Facebook API");
-});
-
-app.get("/sendHello", async (req, res) => {
-  await sendReply("31401170246149001", "Hello");
-  res.send(`sendHello success ${ADMIN_SEND_MESSAGE_TOKEN}`);
 });
 
 // 4️⃣ Start server
