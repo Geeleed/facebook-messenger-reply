@@ -27,7 +27,7 @@ app.post("/webhook", (req, res) => {
   const body = req.body;
 
   if (body.object === "page") {
-    body.entry.forEach((entry) => {
+    body.entry.forEach(async (entry) => {
       const event = entry.messaging[0];
       const senderId = event.sender.id;
       console.log({ event });
@@ -38,12 +38,12 @@ app.post("/webhook", (req, res) => {
         // 🎯 Handle text
         if (text) {
           console.log("📩 ข้อความที่ได้รับ:", text);
-          sendReply(senderId, `คุณส่งข้อความว่า: "${text}"`);
+          await sendReply(senderId, `คุณส่งข้อความว่า: "${text}"`);
         }
 
         // 📎 Handle attachments (media or sticker)
         if (attachments && attachments.length > 0) {
-          attachments.forEach((attachment) => {
+          attachments.forEach(async (attachment) => {
             const type = attachment.type;
             const url = attachment.payload?.url || "(ไม่มี URL)";
 
@@ -55,11 +55,20 @@ app.post("/webhook", (req, res) => {
               type === "audio" ||
               type === "file"
             ) {
-              sendReply(senderId, `ได้รับไฟล์ประเภท ${type} แล้ว ขอบคุณครับ!`);
+              await sendReply(
+                senderId,
+                `ได้รับไฟล์ประเภท ${type} แล้ว ขอบคุณครับ!`
+              );
             } else if (type === "sticker") {
-              sendReply(senderId, "น่ารักจัง ขอบคุณสำหรับสติ๊กเกอร์ครับ!");
+              await sendReply(
+                senderId,
+                "น่ารักจัง ขอบคุณสำหรับสติ๊กเกอร์ครับ!"
+              );
             } else {
-              sendReply(senderId, `ได้รับสิ่งที่ส่งมาแล้ว (ประเภท: ${type})`);
+              await sendReply(
+                senderId,
+                `ได้รับสิ่งที่ส่งมาแล้ว (ประเภท: ${type})`
+              );
             }
           });
         }
