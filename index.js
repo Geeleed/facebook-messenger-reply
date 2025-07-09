@@ -116,8 +116,8 @@ app.get("/", async (req, res) => {
   res.send("Hello Welcone to Geeleed Facebook API");
 });
 
-app.get("/sendHello", async (req, res) => {
-  await sendReply("31401170246149001", "Hello");
+app.get("/sendHello", (req, res) => {
+  sendReply("31401170246149001", "Hello");
   res.send("sendHello success");
 });
 
