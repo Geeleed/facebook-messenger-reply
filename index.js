@@ -110,6 +110,14 @@ async function sendReply(senderId, messageText) {
     .finally(() => console.log("function sendReply"));
 }
 
+app.get("/sendHello", async (req, res) => {
+  try {
+    await sendReply("31401170246149001", "Hello");
+    res.send("success");
+  } catch (error) {
+    res.send("fail", { error });
+  }
+});
 // 4️⃣ Start server
 const PORT = process.env.PORT || 8100;
 app.listen(PORT, () => {
