@@ -1,10 +1,9 @@
 // index.js
 const express = require("express");
-const axios = require("axios");
 const app = express();
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const ADMIN_SEND_MESSAGE_TOKEN = process.env.ADMIN_SEND_MESSAGE_TOKEN;
 
 app.use(express.json());
 
@@ -87,19 +86,17 @@ app.post("/webhook", async (req, res) => {
 
 // 3️⃣ Send message back
 async function sendReply(senderId, messageText) {
-  await fetch(
-    `https://graph.facebook.com/v23.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
-    {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        recipient: { id: senderId },
-        message: { text: messageText },
-      }),
-    }
-  )
+  await fetch(`https://graph.facebook.com/v23.0/me/messages`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `bearer ${ADMIN_SEND_MESSAGE_TOKEN}`,
+    },
+    body: JSON.stringify({
+      recipient: { id: senderId },
+      message: { text: messageText },
+    }),
+  })
     .then(() => {
       console.log("✅ ส่งข้อความกลับแล้ว");
     })
@@ -112,13 +109,8 @@ async function sendReply(senderId, messageText) {
     .finally(() => console.log("function sendReply"));
 }
 
-app.get("/sendHello", async (req, res) => {
-  try {
-    await sendReply("31401170246149001", "Hello");
-    res.send("success");
-  } catch (error) {
-    res.send("fail", { error });
-  }
+app.get("/", async (req, res) => {
+  res.send("Hello Welcone to Geeleed Facebook API");
 });
 // 4️⃣ Start server
 const PORT = process.env.PORT || 8100;
