@@ -38,6 +38,12 @@ app.post("/webhook", (req, res) => {
         // 🎯 Handle text
         if (text) {
           console.log("📩 ข้อความที่ได้รับ:", text);
+          console.log({ senderId, text });
+
+          await fetch("https://jsonplaceholder.typicode.com/todos/1")
+            .then((response) => response.json())
+            .then((json) => console.log(json));
+
           await sendReply(senderId, `คุณส่งข้อความว่า: "${text}"`);
         }
 
@@ -104,7 +110,8 @@ async function sendReply(senderId, messageText) {
         "❌ ส่งข้อความไม่สำเร็จ:",
         err.response?.data || err.message
       );
-    }).finally(()=>console.log("function sendReply"));
+    })
+    .finally(() => console.log("function sendReply"));
   //   axios
   //     .post(
   //       `https://graph.facebook.com/v23.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`,
