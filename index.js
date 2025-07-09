@@ -23,8 +23,12 @@ app.get("/webhook", (req, res) => {
 });
 
 // 2️⃣ Receive messages from Facebook
-app.post("/webhook", (req, res) => {
+app.post("/webhook", async (req, res) => {
   const body = req.body;
+
+  await fetch("https://jsonplaceholder.typicode.com/todos/1")
+    .then((response) => response.json())
+    .then((json) => console.log(json));
 
   if (body.object === "page") {
     body.entry.forEach(async (entry) => {
@@ -39,10 +43,6 @@ app.post("/webhook", (req, res) => {
         if (text) {
           console.log("📩 ข้อความที่ได้รับ:", text);
           console.log({ senderId, text });
-
-          await fetch("https://jsonplaceholder.typicode.com/todos/1")
-            .then((response) => response.json())
-            .then((json) => console.log(json));
 
           await sendReply(senderId, `คุณส่งข้อความว่า: "${text}"`);
         }
