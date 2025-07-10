@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 const ADMIN_SEND_MESSAGE_TOKEN = process.env.ADMIN_SEND_MESSAGE_TOKEN;
 
 module.exports = async function sendReply(senderId, messageText) {
